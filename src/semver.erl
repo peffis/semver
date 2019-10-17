@@ -34,11 +34,8 @@ equivalent(A, B) ->
     compare(A, B) =:= 0.
 
 -spec compare(semver(), semver()) -> integer().
-compare(#semver{patch=P1}=A, #semver{patch=P2}=B) ->
-    case do_compare(unpack(A), unpack(B)) of
-        0 -> do_compare(P1, P2);
-        N -> N
-    end.
+compare(A, B) ->
+    do_compare(A, B).
 
 -spec major_version(semver()) -> integer().
 major_version(#semver{major=M}) -> M.
@@ -81,10 +78,6 @@ parse(V) ->
                     Result#semver{patch=Patch}
             end
     end.
-
-unpack(#semver{major=Maj, minor=Min, build=Build}) ->
-    list_to_float(lists:concat(
-            io_lib:format("~p~s~p~p", [Maj, ".", Min, Build]))).
 
 do_compare(undefined, undefined) -> 0;
 do_compare(_A, undefined) -> 1;
